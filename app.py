@@ -7,7 +7,7 @@ import requests
 # ==========================================
 # 1. 사용자 설정 (이 부분만 수정하세요!)
 # ==========================================
-TELEGRAM_TOKEN = 7883185978:AAH7QjxYVMtIa4V29qMRx_IkOf1_IIJvAVY  # 텔레그램 봇 토큰
+TELEGRAM_TOKEN = "7883185978:AAH7QjxYVMtIa4V29qMRx_IkOf1_IIJvAVY"  # 텔레그램 봇 토큰
 CHAT_ID = 1781982606        # 텔레그램 수신자 ID (숫자)
 
 # 상단 이미지/동영상 경로 (URL 혹은 파일경로)
@@ -117,3 +117,4 @@ with st.container():
 # (5) 하단 정보
 st.markdown("---")
 st.caption("© 2026 랜딩페이지 프로젝트. All rights reserved.")
+
