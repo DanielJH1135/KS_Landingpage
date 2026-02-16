@@ -11,7 +11,7 @@ TELEGRAM_TOKEN = "7883185978:AAH7QjxYVMtIa4V29qMRx_IkOf1_IIJvAVY"  # 텔레그�
 CHAT_ID = 1781982606        # 텔레그램 수신자 ID (숫자)
 
 # 상단 이미지/동영상 경로 (URL 혹은 파일경로)
-MAIN_IMAGE = "https://unsplash.com/ko/%EC%82%AC%EC%A7%84/%EB%B0%B0%EA%B2%BD%EC%97%90-%ED%92%8D%EB%A0%A5-%ED%84%B0%EB%B9%88%EC%9D%B4-%EC%9E%88%EB%8A%94-%ED%83%9C%EC%96%91-%EC%A0%84%EC%A7%80%ED%8C%90-YtELR3Q5Y4E"
+MAIN_IMAGE = "https://unsplash.com/ko/사진/파란색-태양-전지판-보드-V4ZYJZJ3W4M"
 # 동영상을 넣고 싶다면 st.video("동영상URL")를 아래 섹션에서 사용하세요.
 
 # ==========================================
@@ -117,5 +117,6 @@ with st.container():
 # (5) 하단 정보
 st.markdown("---")
 st.caption("© 2026 랜딩페이지 프로젝트. All rights reserved.")
+
 
 
