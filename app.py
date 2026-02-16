@@ -24,49 +24,63 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    /* 1. 타이틀: 폰트 사이즈 미세 조정 및 한 줄 고정 */
+    /* 1. 타이틀: 기본 2.0rem에서 모바일은 더 작게 가변 조절 */
     h1 {
-        font-size: 2.0rem !important; 
-        white-space: nowrap !important;
-        word-break: keep-all !important;
-        text-align: center;
+        font-size: 1.9rem !important; /* 1pt 더 줄임 */
         font-weight: 800 !important;
+        text-align: center;
+        word-break: keep-all !important;
+        line-height: 1.3 !important;
     }
 
-    /* 2. 부제목: 1pt 정도 크기 축소 */
+    /* 2. 부제목: 기존보다 1pt 더 줄임 */
     h3 {
-        font-size: 1.15rem !important;
+        font-size: 1.05rem !important; /* 가독성을 위해 살짝 더 축소 */
         font-weight: 500 !important;
-        color: #444 !important;
+        color: #555 !important;
         text-align: center;
-        margin-top: -10px !important;
+        margin-top: -5px !important;
     }
     
-    /* 3. 질문 라벨(성함, 연락처, 문의사항)만 골라서 볼드체 적용 */
-    /* 텍스트 입력창과 셀렉트박스의 라벨을 정확히 타겟팅 */
-    div[data-testid="stTextInput"] label p, 
-    div[data-testid="stSelectbox"] label p {
+    /* 3. 질문 라벨(성함, 연락처, 문의사항) 볼드체 */
+    div[data-testid="stWidgetLabel"] p {
         font-weight: 800 !important;
         font-size: 1.05rem !important;
         color: #1e1e1e !important;
+        margin-bottom: -5px !important;
     }
 
-    /* 4. 문의사항 선택창의 이상한 회색 박스/테두리 잔상 제거 */
-    div[data-testid="stSelectbox"] > div:nth-child(1) > div {
-        background-color: transparent !important;
-    }
+    /* 4. 문의사항 선택창의 박스 잔상 제거 */
     div[data-testid="stSelectbox"] label {
         background-color: transparent !important;
         border: none !important;
+        padding: 0 !important;
     }
-    
-    /* 5. 개인정보 동의 체크박스: 볼드체 해제 (일반 굵기로) */
+    div[data-testid="stSelectbox"] > div:nth-child(1) > div {
+        background-color: white !important; /* 배경을 흰색으로 고정 */
+    }
+
+    /* 5. 개인정보 동의 체크박스: 볼드 해제 */
     div[data-testid="stCheckbox"] label p {
         font-weight: 400 !important;
-        font-size: 0.95rem !important;
+        font-size: 0.9rem !important;
     }
     
-    /* 6. 버튼 디자인 */
+    /* 6. 모바일 전용 최적화 (화면 폭이 600px 이하일 때) */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 1.5rem !important; /* 모바일에서 타이틀이 한 줄로 잘 나오게 대폭 축소 */
+        }
+        h3 {
+            font-size: 0.95rem !important; /* 부제목도 모바일 최적화 */
+        }
+        div.stButton > button:first-child {
+            font-size: 16px !important;
+            height: 3.2em !important;
+        }
+    }
+
+    /* 7. 버튼 디자인 */
     div.stButton > button:first-child {
         width: 100%;
         height: 3.5em;
@@ -78,7 +92,6 @@ st.markdown("""
         border: none;
     }
     
-    /* 입력창 높이 및 테두리 */
     .stTextInput input, .stSelectbox div {
         height: 3.2em;
         border-radius: 8px;
@@ -98,7 +111,7 @@ def send_telegram_msg(name, phone, interest):
 # 3. 화면 구성
 # ==========================================
 
-# (1) 메인 이미지
+# (1) 메인 비주얼
 st.image(MAIN_IMAGE, use_container_width=True)
 
 # (2) 타이틀 및 부제목
@@ -109,14 +122,12 @@ st.write("---")
 # (3) DB 수집 폼
 with st.container():
     with st.form("survey_form", clear_on_submit=True):
-        # '무료 상담 신청서' 제목 볼드체
         st.markdown("#### **📋 무료 상담 신청서**")
         
         name = st.text_input("성함", placeholder="성함을 입력해 주세요")
         
         phone = st.text_input("연락처", placeholder="010-0000-0000")
         
-        # 문의 사항
         interest = st.selectbox(
             "문의 사항 (최적의 조건으로 안내해 드립니다)",
             ["한전 수전합리화사업(전력요금 절감)", "주차장 태양광", "축사 지붕 태양광", "기타 문의"]
