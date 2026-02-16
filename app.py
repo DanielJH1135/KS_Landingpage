@@ -5,14 +5,13 @@ import os
 import requests
 
 # ==========================================
-# 1. 사용자 설정 (이 부분만 수정하세요!)
+# 1. 사용자 설정
 # ==========================================
-TELEGRAM_TOKEN = "7883185978:AAH7QjxYVMtIa4V29qMRx_IkOf1_IIJvAVY"  # 텔레그램 봇 토큰
-CHAT_ID = 1781982606        # 텔레그램 수신자 ID (숫자)
+TELEGRAM_TOKEN = "7883185978:AAH7QjxYVMtIa4V29qMRx_IkOf1_IIJvAVY"
+CHAT_ID = 1781982606
 
-# 상단 이미지/동영상 경로 (URL 혹은 파일경로)
-MAIN_IMAGE = "https://unsplash.com/ko/사진/파란색-태양-전지판-보드-V4ZYJZJ3W4M"
-# 동영상을 넣고 싶다면 st.video("동영상URL")를 아래 섹션에서 사용하세요.
+# [수정] 언스플래쉬 이미지는 원본 소스 링크 형식을 사용해야 화면에 나옵니다.
+MAIN_IMAGE = "https://images.unsplash.com/photo-1509391366360-feaffa663abd?q=80&w=2070&auto=format&fit=crop"
 
 # ==========================================
 # 2. 페이지 기본 설정 및 디자인
@@ -23,11 +22,21 @@ st.set_page_config(
     layout="centered"
 )
 
-# 모바일 최적화를 위한 커스텀 스타일
+# 모바일 및 가시성 최적화 커스텀 스타일
 st.markdown("""
     <style>
-    /* 전체 폰트 및 모바일 터치 최적화 */
+    /* 전체 배경 */
     .main { background-color: #f9f9f9; }
+    
+    /* 질문(Label) 스타일 수정: 볼드체 + 3포인트 크게 */
+    label {
+        font-size: 1.2rem !important; /* 기본보다 약 3pt 크게 */
+        font-weight: 800 !important;   /* 아주 굵게 */
+        color: #31333F !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* 버튼 스타일 */
     div.stButton > button:first-child {
         width: 100%;
         height: 3.5em;
@@ -38,6 +47,8 @@ st.markdown("""
         font-size: 18px;
         border: none;
     }
+    
+    /* 입력창 디자인 */
     .stTextInput input, .stSelectbox div {
         height: 3.5em;
         border-radius: 10px;
@@ -53,40 +64,37 @@ def send_telegram_msg(name, phone, interest):
     try:
         requests.get(url, params=params)
     except:
-        pass # 오류 시 무시
+        pass
 
 # ==========================================
 # 3. 화면 구성
 # ==========================================
 
-# (1) 메인 비주얼 (이미지)
-# 이미지를 바꾸고 싶다면 아래 URL을 수정하세요.
-st.image(MAIN_IMAGE, use_container_width=True)
+# (1) 메인 비주얼
+st.image(MAIN_IMAGE, use_container_width=True, caption="KS 태양광 솔루션")
 
-# (2) 동영상 추가 예시 (필요 없으면 앞에 #를 붙여 주석처리 하세요)
-# st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-
-# (3) 타이틀 및 설명
+# (2) 타이틀 및 설명
 st.title("🚀 까다로운 축사, 주차장도 한번에 해결!")
-st.subheader("지금 신청하시면 런칭 즉시 혜택을 드립니다.")
+st.subheader("지금 신청하시면 최적의 맞춤 설계를 도와드립니다.")
 st.write("---")
 
-# (4) DB 수집 폼
+# (3) DB 수집 폼
 with st.container():
     with st.form("survey_form", clear_on_submit=True):
-        st.write("📋 **신청서 작성**")
+        st.write("📋 **아래 정보를 입력해 주세요**")
         
-        name = st.text_input("성함", placeholder="이름을 입력해 주세요")
+        # 질문들이 CSS에 의해 볼드/확대되어 보입니다.
+        name = st.text_input("성함", placeholder="성함을 입력해 주세요")
         phone = st.text_input("연락처", placeholder="010-0000-0000")
         interest = st.selectbox(
-            "어떤 문의사항이 있으신가요? 최적의 조건으로 진행해드립니다.",
+            "문의 사항 (최적의 조건으로 안내해 드립니다)",
             ["한전 수전합리화사업(전력요금 절감)", "주차장 태양광", "축사 지붕 태양광", "기타 문의"]
         )
         
         st.caption("개인정보는 알림 발송 후 즉시 파기됩니다.")
         agree = st.checkbox("개인정보 수집 및 이용 동의 (필수)")
         
-        submit_button = st.form_submit_button("사전 예약 신청 완료")
+        submit_button = st.form_submit_button("상담 신청 완료")
 
         if submit_button:
             if not name or not phone:
@@ -94,10 +102,9 @@ with st.container():
             elif not agree:
                 st.warning("개인정보 수집에 동의해 주세요.")
             else:
-                # 텔레그램 알림 발송
                 send_telegram_msg(name, phone, interest)
                 
-                # CSV 파일로 서버에 저장
+                # CSV 저장
                 new_data = {
                     "시간": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
                     "이름": [name],
@@ -106,17 +113,11 @@ with st.container():
                 }
                 df = pd.DataFrame(new_data)
                 file_path = "database.csv"
-                if not os.path.isfile(file_path):
-                    df.to_csv(file_path, index=False, encoding="utf-8-sig")
-                else:
-                    df.to_csv(file_path, mode='a', header=False, index=False, encoding="utf-8-sig")
+                df.to_csv(file_path, mode='a', header=not os.path.exists(file_path), index=False, encoding="utf-8-sig")
                 
                 st.balloons()
-                st.success(f"감사합니다, {name}님! 정상적으로 접수되었습니다.")
+                st.success(f"감사합니다, {name}님! 담당자가 곧 연락드리겠습니다.")
 
-# (5) 하단 정보
+# (4) 하단 정보
 st.markdown("---")
-st.caption("© 2026 랜딩페이지 프로젝트. All rights reserved.")
-
-
-
+st.caption("© 2026 KS Solar Energy Project. All rights reserved.")
