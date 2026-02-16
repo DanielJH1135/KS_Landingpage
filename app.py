@@ -11,15 +11,15 @@ TELEGRAM_TOKEN = "7883185978:AAH7QjxYVMtIa4V29qMRx_IkOf1_IIJvAVY"  # 텔레그�
 CHAT_ID = 1781982606        # 텔레그램 수신자 ID (숫자)
 
 # 상단 이미지/동영상 경로 (URL 혹은 파일경로)
-MAIN_IMAGE = "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&q=80&w=800"
+MAIN_IMAGE = "https://unsplash.com/ko/%EC%82%AC%EC%A7%84/%EB%B0%B0%EA%B2%BD%EC%97%90-%ED%92%8D%EB%A0%A5-%ED%84%B0%EB%B9%88%EC%9D%B4-%EC%9E%88%EB%8A%94-%ED%83%9C%EC%96%91-%EC%A0%84%EC%A7%80%ED%8C%90-YtELR3Q5Y4E"
 # 동영상을 넣고 싶다면 st.video("동영상URL")를 아래 섹션에서 사용하세요.
 
 # ==========================================
 # 2. 페이지 기본 설정 및 디자인
 # ==========================================
 st.set_page_config(
-    page_title="사전 예약 이벤트",
-    page_icon="🎁",
+    page_title="전력절감, 태양광 솔루션은 KS입니다.",
+    page_icon="⚡",
     layout="centered"
 )
 
@@ -67,7 +67,7 @@ st.image(MAIN_IMAGE, use_container_width=True)
 # st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 # (3) 타이틀 및 설명
-st.title("🚀 새로운 서비스의 주인공이 되세요")
+st.title("🚀 까다로운 축사, 주차장도 한번에 해결!")
 st.subheader("지금 신청하시면 런칭 즉시 혜택을 드립니다.")
 st.write("---")
 
@@ -79,8 +79,8 @@ with st.container():
         name = st.text_input("성함", placeholder="이름을 입력해 주세요")
         phone = st.text_input("연락처", placeholder="010-0000-0000")
         interest = st.selectbox(
-            "어떤 기능이 가장 기대되나요?",
-            ["가장 빠른 배송", "저렴한 가격", "압도적인 품질", "기타 문의"]
+            "어떤 문의사항이 있으신가요? 최적의 조건으로 진행해드립니다.",
+            ["한전 수전합리화사업(전력요금 절감)", "주차장 태양광", "축사 지붕 태양광", "기타 문의"]
         )
         
         st.caption("개인정보는 알림 발송 후 즉시 파기됩니다.")
@@ -117,4 +117,5 @@ with st.container():
 # (5) 하단 정보
 st.markdown("---")
 st.caption("© 2026 랜딩페이지 프로젝트. All rights reserved.")
+
 
